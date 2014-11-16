@@ -63,7 +63,7 @@ the buoyancy differences between different vertical levels in the ocean.
 Our implementation is adapted from the Parallel Ocean Program
 http://climate.lanl.gov/Models/POP/
 
-## 2D Convolution
+### 2D Convolution
 Kernel from the image analysis domain that for each
 pixel in an image computes a weighted average of the neighborhood of
 that pixel and the weights stored in a convolution filter.
@@ -82,7 +82,7 @@ Better performance at lower occupancy
 V. Volkov
 GPU Technology Conference. GTC 2010. Nvidia 2010.
 
-## Sparse matrix vector multiplication
+### Sparse matrix vector multiplication
 A well-known kernel with an irregular data access pattern that computes
 the multiplication of a sparse matrix in CSR representation and an
 input vector.
@@ -93,7 +93,7 @@ The Latest Release
 
 Details of the releases of this software can be found at:
 
-<https://github.com/NLeSC/name-of-project/release>
+<https://github.com/NLeSC/com-com-kernels/release>
 
 
 Dependencies
@@ -115,7 +115,7 @@ The Latest Version
 
 Details of the latest version of this software can be found at: 
 
-<https://github.com/NLeSC/name-of-project>
+<https://github.com/NLeSC/com-com-kernels>
 
 
 License
