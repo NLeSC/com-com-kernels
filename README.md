@@ -118,6 +118,25 @@ Details of the latest version of this software can be found at:
 <https://github.com/NLeSC/com-com-kernels>
 
 
+Citation
+--------
+
+If you use this software or a modified version of it, please cite the
+most relevant among the following papers:
+
+"Performance models for overlapping CPU-GPU communication with GPU computation"
+B. van Werkhoven, J. Maassen, F.J. Seinstra, and H.E. Bal
+In: submitted, 2014
+
+"A distributed computing approach to improve the performance of the Parallel Ocean Program (v2.1)"
+B. van Werkhoven, J. Maassen, M. Kliphuis, H.A. Dijkstra, S.E. Brunnabend, M. van Meersbergen, F.J. Seinstra, and H.E. Bal
+Geoscientific Model Development, Volume 7, Issue 1, Pages 267-281, Febuary 2014. 
+
+"Optimizing convolution operations on GPUs using adaptive tiling"
+B. van Werkhoven, J. Maassen, F.J. Seinstra, H.E Bal
+Future Generation Computer Systems, Volume 30, 2014
+
+
 License
 -------
 
@@ -135,18 +154,4 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-If you use this software or a modified version of it, please cite the
-most relevant among the following papers:
-
-"Performance models for overlapping CPU-GPU communication with GPU computation"
-B. van Werkhoven, J. Maassen, F.J. Seinstra, and H.E. Bal
-In: submitted, 2014
-
-"A distributed computing approach to improve the performance of the Parallel Ocean Program (v2.1)"
-B. van Werkhoven, J. Maassen, M. Kliphuis, H.A. Dijkstra, S.E. Brunnabend, M. van Meersbergen, F.J. Seinstra, and H.E. Bal
-Geoscientific Model Development, Volume 7, Issue 1, Pages 267-281, Febuary 2014. 
-
-"Optimizing convolution operations on GPUs using adaptive tiling"
-B. van Werkhoven, J. Maassen, F.J. Seinstra, H.E Bal
-Future Generation Computer Systems, Volume 30, 2014
 
