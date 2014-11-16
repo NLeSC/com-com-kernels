@@ -5,13 +5,13 @@ Kernels for computation and communication overlap
 What is this? 
 -------------
 
-This package contains a set of applications that implement the a set of 
-kernels in along four different implementation strategies for overlapping
-GPU computation and CPU-GPU communication.
+This package contains a set of applications that implements a set of 
+kernels along four different implementation strategies for overlapping GPU 
+computation and CPU-GPU communication.
 
-These applications have been used in the evaluation of the performance models
-in "Performance Models for overlapping CPU-GPU communication with GPU
-computation" by B. van Werkhoven et al.
+These applications have been used in the evaluation of the performance 
+models in "Performance Models for overlapping CPU-GPU communication with 
+GPU computation" by B. van Werkhoven et al.
 
 This package also contains the benchmark application that is used to 
 determine the system parameters needed for estimating PCIe transfer times.
@@ -35,15 +35,15 @@ communication and GPU computation.
 between PCIe transfers and kernel execution.
 
 *Implicit* uses device-mapped host memory to allow fine-grained overlap
-between PCIe transfers and kernel execution.
+between PCIe transfers in both directions and kernel execution.
 
 *Streams* uses explicit memory copy statements in combination with CUDA
 streams to overlap communication in one stream with computation and/or
-transfers in other streams.
+communication in other streams.
 
 *Hybrid* is the implementation that uses CUDA streams and memory copies
 to overlap transfers from host to device with GPU computation and uses
-device-mapped host memory for transferring the output back to main to
+device-mapped host memory for transferring the output data back to
 main memory.
 
 
@@ -102,6 +102,12 @@ Dependencies
 You need a Fortran 90, C, and C++ compiler and the Nvidia CUDA compiler.
 A Makefile is provided, but the path to the cuda runtime should be 
 edited in the Makefile before the Makefile can be used.
+
+
+Usage
+-----
+
+All applications can be run from the command line without any arguments.
 
 
 The Latest Version
