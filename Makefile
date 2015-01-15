@@ -1,10 +1,27 @@
+#################
+#
+# Makefile for "Kernels for computation and communication overlap"
+#
+# Adjust to following for your local setup:
 
+# set path to cuda runtime library for the Fortran linker
+LIB_PATH = -L/cm/shared/apps/cuda55/toolkit/current/lib64/
+
+# select the right compute capability for your GPU
+#NVCCFLAGS = -gencode arch=compute_35,code=sm_35 -Xptxas=-v
+#NVCCFLAGS = -gencode arch=compute_30,code=sm_30 -Xptxas=-v
+NVCCFLAGS = -gencode arch=compute_20,code=sm_20 -Xptxas=-v
+
+#################
+
+# Compilers
 CC = g++
+NVCC = nvcc -Xcompiler=-Wall
+#FC = ifort $(IFLAGS)
+FC = gfortran $(FFLAGS)
 
 OPT = -O3
 #OPT = -g
-
-NVCC = nvcc -Xcompiler=-Wall
 
 CFLAGS = $(OPT)
 
@@ -14,16 +31,7 @@ FFLAGS = -fdefault-double-8 -fdefault-real-8 -Wall -Wtabs $(OPT) -fimplicit-none
 #ifort options
 IFLAGS = $(OPT) -fpconstant -r8
 
-LIB_PATH = -L/cm/shared/apps/cuda55/toolkit/current/lib64/
-
-#NVCCFLAGS = -gencode arch=compute_35,code=sm_35 -Xptxas=-v -maxrregcount=64
-#NVCCFLAGS = -gencode arch=compute_30,code=sm_30 -Xptxas=-v
-NVCCFLAGS = -gencode arch=compute_20,code=sm_20 -Xptxas=-v
-
 .PHONY: clean
-
-#FC = ifort $(IFLAGS)
-FC = gfortran $(FFLAGS)
 
 all: matmul conv benchmark-pci state buoydiff spmv 
 
