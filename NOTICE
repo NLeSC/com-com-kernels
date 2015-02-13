@@ -1,0 +1,6 @@
+com-com-kernels
+Copyright 2015 The Netherlands eScience Center
+
+This product includes files from the Rodinia Benchmark, which is Copyright (c) 2008-2011
+University of Virginia. See timer.cc and timer.h for the license information of the
+Rodinia Benchmark.
