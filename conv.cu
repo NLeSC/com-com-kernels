@@ -47,7 +47,7 @@
 
 #define ITERATIONS 5
 
-//#define USE_READ_ONLY_CACHE 
+//#define USE_READ_ONLY_CACHE
 #ifdef USE_READ_ONLY_CACHE
 #define LDG(x) __ldg(x)
 #else
@@ -71,19 +71,19 @@
 
 extern "C" {
 
-  void convolvution2d (float *image, float *scratch, float *filter, int scratchWidth, int scratchHeight, float filterWeight);
-  void convolvution2d_explicit (float *image, float *scratch, int scratchWidth, int scratchHeight, float filterWeight);
-  void convolvution2d_implicit (float *image, float *scratch, int scratchWidth, int scratchHeight, float filterWeight);
-  void convolvution2d_stream (float *image, float *scratch, int scratchWidth, int scratchHeight, float filterWeight);
-  void convolvution2d_hybrid (float *image, float *scratch, int scratchWidth, int scratchHeight, float filterWeight);
+  void convolution2d (float *image, float *scratch, float *filter, int scratchWidth, int scratchHeight, float filterWeight);
+  void convolution2d_explicit (float *image, float *scratch, int scratchWidth, int scratchHeight, float filterWeight);
+  void convolution2d_implicit (float *image, float *scratch, int scratchWidth, int scratchHeight, float filterWeight);
+  void convolution2d_stream (float *image, float *scratch, int scratchWidth, int scratchHeight, float filterWeight);
+  void convolution2d_hybrid (float *image, float *scratch, int scratchWidth, int scratchHeight, float filterWeight);
 
   void start_timer ();
   void stop_timer (float *);
 
   int compare (float *a, float *b, int N);
 
-  __global__ void convolvution2d_kernel_naive (float *image, float *scratch, int scratchWidth, int scratchHeight, float filterWeight);
-  __global__ void convolvution2d_kernel (float *__restrict__ iPtr, const float *__restrict__ sPtr, int totalWidth, int scratchHeight, float divisor);
+  __global__ void convolution2d_kernel_naive (float *image, float *scratch, int scratchWidth, int scratchHeight, float filterWeight);
+  __global__ void convolution2d_kernel (float *__restrict__ iPtr, const float *__restrict__ sPtr, int totalWidth, int scratchHeight, float divisor);
 
 }
 
@@ -176,28 +176,28 @@ main () {
   float time;
   start_timer ();
 
-  convolvution2d (h_imageref, h_scratch, h_filter, WIDTH + FW - 1, HEIGHT + FH - 1, filterWeight);
+  convolution2d (h_imageref, h_scratch, h_filter, WIDTH + FW - 1, HEIGHT + FH - 1, filterWeight);
 
   stop_timer (&time);
   printf ("2D Convolution on CPU took: %.6f ms\n", time);
 
   for (int i = 0; i < ITERATIONS; i++) {
-    convolvution2d_explicit (h_image, h_scratch, WIDTH + FW - 1, HEIGHT + FH - 1, filterWeight);
+    convolution2d_explicit (h_image, h_scratch, WIDTH + FW - 1, HEIGHT + FH - 1, filterWeight);
   }
   compare (h_imageref, h_image, WIDTH * HEIGHT);
 
   for (int i = 0; i < ITERATIONS; i++) {
-    convolvution2d_implicit (h_image, h_scratch, WIDTH + FW - 1, HEIGHT + FH - 1, filterWeight);
+    convolution2d_implicit (h_image, h_scratch, WIDTH + FW - 1, HEIGHT + FH - 1, filterWeight);
   }
   compare (h_imageref, h_image, WIDTH * HEIGHT);
 
   for (int i = 0; i < ITERATIONS; i++) {
-    convolvution2d_stream (h_image, h_scratch, WIDTH + FW - 1, HEIGHT + FH - 1, filterWeight);
+    convolution2d_stream (h_image, h_scratch, WIDTH + FW - 1, HEIGHT + FH - 1, filterWeight);
   }
   compare (h_imageref, h_image, WIDTH * HEIGHT);
 
   for (int i = 0; i < ITERATIONS; i++) {
-    convolvution2d_hybrid (h_image, h_scratch, WIDTH + FW - 1, HEIGHT + FH - 1, filterWeight);
+    convolution2d_hybrid (h_image, h_scratch, WIDTH + FW - 1, HEIGHT + FH - 1, filterWeight);
   }
   compare (h_imageref, h_image, WIDTH * HEIGHT);
 
@@ -207,7 +207,7 @@ main () {
 
 
 void
-convolvution2d (float *image, float *scratch, float *filter, int scratchWidth, int scratchHeight, float filterWeight) {
+convolution2d (float *image, float *scratch, float *filter, int scratchWidth, int scratchHeight, float filterWeight) {
 
   int x, y;
   int i, j;
@@ -231,7 +231,7 @@ convolvution2d (float *image, float *scratch, float *filter, int scratchWidth, i
 }
 
 __global__ void
-convolvution2d_kernel_naive (float *image, float *scratch, int scratchWidth, int scratchHeight, float filterWeight) {
+convolution2d_kernel_naive (float *image, float *scratch, int scratchWidth, int scratchHeight, float filterWeight) {
 
   int x = blockIdx.x * BLOCK_X + threadIdx.x;
   int y = blockIdx.y * BLOCK_Y + threadIdx.y;
@@ -267,7 +267,7 @@ __shared__ float shared_scratch[SHMEMSIZE];
  *  Future Generation Computer Systems, Volume 30, 2014
  */
 __global__ void
-convolvution2d_kernel (float *__restrict__ iPtr, const float *__restrict__ sPtr, int totalWidth, int scratchHeight, float divisor) {
+convolution2d_kernel (float *__restrict__ iPtr, const float *__restrict__ sPtr, int totalWidth, int scratchHeight, float divisor) {
 
   float sum0 = 0;
   float sum1 = 0;
@@ -371,7 +371,7 @@ convolvution2d_kernel (float *__restrict__ iPtr, const float *__restrict__ sPtr,
  *
  */
 void
-convolvution2d_explicit (float *image, float *scratch, int scratchWidth, int scratchHeight, float filterWeight) {
+convolution2d_explicit (float *image, float *scratch, int scratchWidth, int scratchHeight, float filterWeight) {
   cudaError_t err;
 
   err = cudaMalloc ((void **) &d_image, WIDTH * HEIGHT * sizeof (float));
@@ -408,7 +408,7 @@ convolvution2d_explicit (float *image, float *scratch, int scratchWidth, int scr
     fprintf (stderr, "Error in cudaMemcpy host to device scratch: %s\n", cudaGetErrorString (err));
   }
 
-  convolvution2d_kernel <<< grid, threads, 0, stream[1] >>> (d_image, d_scratch, scratchWidth, scratchHeight, filterWeight);
+  convolution2d_kernel <<< grid, threads, 0, stream[1] >>> (d_image, d_scratch, scratchWidth, scratchHeight, filterWeight);
 
   err = cudaMemcpyAsync (image, d_image, WIDTH * HEIGHT * sizeof (float), cudaMemcpyDeviceToHost, stream[1]);
   if (err != cudaSuccess) {
@@ -426,7 +426,7 @@ convolvution2d_explicit (float *image, float *scratch, int scratchWidth, int scr
   cudaDeviceSynchronize ();
   start_timer ();
 
-  convolvution2d_kernel <<< grid, threads, 0, stream[1] >>> (d_image, d_scratch, scratchWidth, scratchHeight, filterWeight);
+  convolution2d_kernel <<< grid, threads, 0, stream[1] >>> (d_image, d_scratch, scratchWidth, scratchHeight, filterWeight);
 
 
   cudaDeviceSynchronize ();
@@ -453,7 +453,7 @@ convolvution2d_explicit (float *image, float *scratch, int scratchWidth, int scr
  *
  */
 void
-convolvution2d_implicit (float *image, float *scratch, int scratchWidth, int scratchHeight, float filterWeight) {
+convolution2d_implicit (float *image, float *scratch, int scratchWidth, int scratchHeight, float filterWeight) {
 
   dim3 threads (BLOCK_X, BLOCK_Y);
   dim3 grid ((int) ceilf ((float) WIDTH / (float) (TILE_X * BLOCK_X)), (int) ceilf ((float) HEIGHT / (float) (BLOCK_Y)));
@@ -462,7 +462,7 @@ convolvution2d_implicit (float *image, float *scratch, int scratchWidth, int scr
   cudaDeviceSynchronize ();
   start_timer ();
 
-  convolvution2d_kernel <<< grid, threads, 0, stream[1] >>> (image, scratch, scratchWidth, scratchHeight, filterWeight);
+  convolution2d_kernel <<< grid, threads, 0, stream[1] >>> (image, scratch, scratchWidth, scratchHeight, filterWeight);
 
   cudaDeviceSynchronize ();
   stop_timer (&time);
@@ -486,7 +486,7 @@ convolvution2d_implicit (float *image, float *scratch, int scratchWidth, int scr
  *
  */
 void
-convolvution2d_stream (float *image, float *scratch, int scratchWidth, int scratchHeight, float filterWeight) {
+convolution2d_stream (float *image, float *scratch, int scratchWidth, int scratchHeight, float filterWeight) {
   cudaError_t err;
   int k = 0;
 
@@ -547,7 +547,7 @@ convolvution2d_stream (float *image, float *scratch, int scratchWidth, int scrat
     //  }
     //  for (k=0; k<NSTREAMS; k++) {
 
-    convolvution2d_kernel <<< grid, threads, 0, stream[k] >>> (d_image + k * (WIDTH * (HEIGHT / NSTREAMS)), d_scratch + k * lps, scratchWidth, scratchHeight,
+    convolution2d_kernel <<< grid, threads, 0, stream[k] >>> (d_image + k * (WIDTH * (HEIGHT / NSTREAMS)), d_scratch + k * lps, scratchWidth, scratchHeight,
 							       filterWeight);
   }
 
@@ -587,7 +587,7 @@ convolvution2d_stream (float *image, float *scratch, int scratchWidth, int scrat
  *
  */
 void
-convolvution2d_hybrid (float *image, float *scratch, int scratchWidth, int scratchHeight, float filterWeight) {
+convolution2d_hybrid (float *image, float *scratch, int scratchWidth, int scratchHeight, float filterWeight) {
   cudaError_t err;
   int k = 0;
 
@@ -637,7 +637,7 @@ convolvution2d_hybrid (float *image, float *scratch, int scratchWidth, int scrat
 
   for (k = 0; k < NSTREAMS; k++) {
 
-    convolvution2d_kernel <<< grid, threads, 0, stream[k] >>> (image + k * (WIDTH * (HEIGHT / NSTREAMS)), d_scratch + k * lps, scratchWidth, scratchHeight,
+    convolution2d_kernel <<< grid, threads, 0, stream[k] >>> (image + k * (WIDTH * (HEIGHT / NSTREAMS)), d_scratch + k * lps, scratchWidth, scratchHeight,
 							       filterWeight);
   }
 
