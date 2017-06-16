@@ -5,19 +5,18 @@
 
 This package contains a set of applications that implement the a set of
 kernels in along four different implementation strategies for overlapping
-GPU computation and CPU-GPU communication.
+GPU computation and CPU-GPU communication. This package also contains the
+benchmark application that is used to
+determine the system parameters needed for estimating PCIe transfer times.
 
 These applications have been used in the evaluation of the performance models
 in:  
-*"Performance models for overlapping GPU computation with CPU-GPU data transfers"*
-B. van Werkhoven, J. Maassen, F.J. Seinstra, and H.E. Bal
+*"Performance models for CPU-GPU data transfers"*  
+B. van Werkhoven, J. Maassen, F.J. Seinstra, and H.E. Bal  
 In proceedings of the 14th IEEE/ACM International Symposium on Cluster, Cloud and Grid Computing (CCGrid 2014)
 
-This package also contains the benchmark application that is used to
-determine the system parameters needed for estimating PCIe transfer times.
-
 This document contains a short description of the implementations, but
-for more information please read the paper:
+for more information please read the above paper.
 
 ## What are the different implementations?
 
@@ -62,8 +61,8 @@ pixel in an image computes a weighted average of the neighborhood of
 that pixel and the weights stored in a convolution filter.
 We use an optimized kernel implementations as described in:
 
-Optimizing convolution operations on GPUs using adaptive tiling
-B. van Werkhoven, J. Maassen, F.J. Seinstra, H.E Bal
+*Optimizing convolution operations on GPUs using adaptive tiling*  
+B. van Werkhoven, J. Maassen, F.J. Seinstra, H.E Bal  
 Future Generation Computer Systems, Volume 30, 2014
 
 ### Matrix multiplication
@@ -71,8 +70,8 @@ A well-known kernel that computes the product of two matrices. We use
 an implementation that is optimized and tuned towards each GPU in our
 testbed according to the directions given in:
 
-Better performance at lower occupancy
-V. Volkov
+*Better performance at lower occupancy*  
+V. Volkov  
 GPU Technology Conference. GTC 2010. Nvidia 2010.
 
 ### Sparse matrix vector multiplication
@@ -88,15 +87,15 @@ edited in the Makefile before the Makefile can be used.
 
 ## The Latest Version
 
-Details of the latest version of this software can be found at [here](https://github.com/NLeSC/com-com-kernels)
+The latest version of this software can be found at [here](https://github.com/NLeSC/com-com-kernels)
 
 ## Citation
 
 If you use this software or a modified version of it, please cite the
 most relevant among the following papers:
 
-"Performance models for overlapping GPU computation with CPU-GPU data transfers"
-B. van Werkhoven, J. Maassen, F.J. Seinstra, and H.E. Bal
+"Performance models for CPU-GPU data transfers"  
+B. van Werkhoven, J. Maassen, F.J. Seinstra, and H.E. Bal  
 In proceedings 14th IEEE/ACM International Symposium on Cluster, Cloud and Grid Computing (CCGrid 2014)
 
 ```
@@ -110,14 +109,15 @@ In proceedings 14th IEEE/ACM International Symposium on Cluster, Cloud and Grid 
 }
 ```
 
-"A distributed computing approach to improve the performance of the Parallel Ocean Program (v2.1)"
-B. van Werkhoven, J. Maassen, M. Kliphuis, H.A. Dijkstra, S.E. Brunnabend, M. van Meersbergen, F.J. Seinstra, and H.E. Bal
+"A distributed computing approach to improve the performance of the Parallel Ocean Program (v2.1)"  
+B. van Werkhoven, J. Maassen, M. Kliphuis, H.A. Dijkstra, S.E. Brunnabend, M. van Meersbergen, F.J. Seinstra, and H.E. Bal  
 Geoscientific Model Development, Volume 7, Issue 1, Pages 267-281, Febuary 2014.
 
 ```
 @article{vanwerkhoven2014distributed,
   title={A distributed computing approach to improve the performance of the Parallel Ocean Program (v2. 1)},
-  author={van Werkhoven, Ben and Maassen, Jason and Kliphuis, M and Dijkstra, HA and Brunnabend, SE and Van Meersbergen, M and Seinstra, FJ and Bal, HE},
+  author={van Werkhoven, Ben and Maassen, Jason and Kliphuis, M and Dijkstra,
+          HA and Brunnabend, SE and Van Meersbergen, M and Seinstra, FJ and Bal, HE},
   journal={Geoscientific Model Development},
   volume={7},
   number={1},
@@ -127,8 +127,8 @@ Geoscientific Model Development, Volume 7, Issue 1, Pages 267-281, Febuary 2014.
 }
 ```
 
-"Optimizing convolution operations on GPUs using adaptive tiling"
-B. van Werkhoven, J. Maassen, F.J. Seinstra, H.E Bal
+"Optimizing convolution operations on GPUs using adaptive tiling"  
+B. van Werkhoven, J. Maassen, F.J. Seinstra, H.E Bal  
 Future Generation Computer Systems, Volume 30, 2014
 
 ```
